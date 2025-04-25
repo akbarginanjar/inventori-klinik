@@ -22,6 +22,11 @@
                 <form action="{{ route('admin.s_keluar.store') }}" method="POST">
                     @csrf
                     <div class="form-group mb-2">
+                        <label for="admin">Admin</label>
+                        <input type="text" name="" id="" value="{{ Auth::user()->name }}"
+                            class="form-control" required>
+                    </div>
+                    <div class="form-group mb-2">
                         <label for="tanggal_keluar">Tanggal Keluar</label>
                         <input type="date" name="tanggal_keluar" id="tanggal_keluar" class="form-control" required>
                     </div>
@@ -29,7 +34,7 @@
                         <label for="obat_id">Obat</label>
                         <select name="obat_id" id="obat_id" class="form-control" required>
                             @foreach ($obats as $obat)
-                            <option value="{{ $obat->id }}">{{ $obat->nama_obat }}</option>
+                                <option value="{{ $obat->id }}">{{ $obat->nama_obat }}</option>
                             @endforeach
                         </select>
                     </div>

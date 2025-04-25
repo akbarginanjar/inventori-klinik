@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        
+
         <h2>Edit Stok Keluar</h2>
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Beranda</a></li>
@@ -16,22 +16,29 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group mb-2">
+                        <label for="admin">Admin</label>
+                        <input type="text" name="" id="" value="{{ $s_keluar->user->name }}"
+                            class="form-control" required>
+                    </div>
+                    <div class="form-group mb-2">
                         <label for="tanggal_keluar">Tanggal Keluar</label>
-                        <input type="date" name="tanggal_keluar" id="tanggal_keluar" class="form-control" value="{{ $s_keluar->tanggal_keluar }}" required>
+                        <input type="date" name="tanggal_keluar" id="tanggal_keluar" class="form-control"
+                            value="{{ $s_keluar->tanggal_keluar }}" required>
                     </div>
                     <div class="form-group mb-2">
                         <label for="obat_id">Obat</label>
                         <select name="obat_id" id="obat_id" class="form-control" required>
-                            @foreach($obats as $obat)
-                            <option value="{{ $obat->id }}" {{ $obat->id == $s_keluar->obat_id ? 'selected' : '' }}>
-                                {{ $obat->nama_obat }}
-                            </option>
+                            @foreach ($obats as $obat)
+                                <option value="{{ $obat->id }}" {{ $obat->id == $s_keluar->obat_id ? 'selected' : '' }}>
+                                    {{ $obat->nama_obat }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group mb-2">
                         <label for="qty">Jumlah</label>
-                        <input type="number" name="qty" id="qty" class="form-control" value="{{ $s_keluar->qty }}" required min="1">
+                        <input type="number" name="qty" id="qty" class="form-control"
+                            value="{{ $s_keluar->qty }}" required min="1">
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Simpan Peerubahan</button>

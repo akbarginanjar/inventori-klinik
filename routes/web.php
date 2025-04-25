@@ -31,7 +31,7 @@ Route::get('/welcome', function () {
 })->name('welcome');
 
 // Rute untuk admin
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Rute untuk manajemen suppliers
     Route::resource('suppliers', SupplierController::class);
     // Rute untuk manajemen jenis obat
