@@ -5,7 +5,7 @@
         
         <h2>Daftar Jenis Obat</h2>
         <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="/home">Beranda</a></li>
             <li class="breadcrumb-item active">Jenis Obat</li>
         </ol>
         @if (session('success'))

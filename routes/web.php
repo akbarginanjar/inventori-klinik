@@ -55,4 +55,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::post('import-smasuk', [S_MasukController::class, 'import']);
     Route::post('import-skeluar', [S_KeluarController::class, 'import']);
+
+    Route::get('notifikasi', function() {
+        return view('admin.notifikasi.index');
+    });
+    Route::get('notifikasi/detail', function() {
+        return view('admin.notifikasi.detail');
+    });
 });

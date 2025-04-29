@@ -4,7 +4,7 @@
     <div class="container">
         <h2>Daftar Stok Keluar</h2>
         <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="/home">Beranda</a></li>
             <li class="breadcrumb-item active">Stok Keluar</li>
         </ol>
 
