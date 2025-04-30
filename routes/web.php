@@ -12,6 +12,7 @@ use App\Http\Controllers\S_MasukController;
 use App\Http\Controllers\S_KeluarController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotifikasiController;
 use Maatwebsite\Excel\Facades\Excel;
 
 // Rute untuk halaman beranda (login)
@@ -46,20 +47,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
 
     // Rute untuk ekspor dan impor data stok masuk dan keluar
-    Route::get('export-smasuk', function () {
-        return Excel::download(new SMasukExport, 'smasuk.xlsx');
-    });
-    Route::get('export-skeluar', function () {
-        return Excel::download(new SKeluarExport, 'skeluar.xlsx');
-    });
+    Route::get('export-smasuk', [S_MasukController::class, 'export']);
+    Route::get('export-skeluar', [S_KeluarController::class, 'export']);
 
     Route::post('import-smasuk', [S_MasukController::class, 'import']);
     Route::post('import-skeluar', [S_KeluarController::class, 'import']);
 
-    Route::get('notifikasi', function() {
-        return view('admin.notifikasi.index');
-    });
-    Route::get('notifikasi/detail', function() {
-        return view('admin.notifikasi.detail');
-    });
+    Route::get('notifikasi', [NotifikasiController::class, 'index']);
+    Route::get('notifikasi/detail/{id}/{slug}', [NotifikasiController::class, 'detail']);
 });

@@ -13,57 +13,59 @@
 
                 <div class="mb-3">
                     <a href="{{ route('admin.s_keluar.create') }}" class="btn btn-primary">Tambah Stok Keluar</a>
-                    <a href="/admin/export-skeluar" class="btn btn-success">Ekspor Excel</a>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
+                        Ekspor Excel
+                    </button>
                     {{-- <a href="#" class="btn btn-info" data-toggle="modal" data-target="#importModal">Impor Excel</a> --}}
-                    
+
                     <!-- Laporan Button -->
                     {{-- <button class="btn btn-secondary" data-toggle="modal" data-target="#laporanModal">Laporan</button> --}}
                 </div>
-                
+
                 @if (session('success'))
-                <div class="alert alert-success mt-2 d-flex justify-content-between align-items-center">
-                    <div>
-                        {{ session('success') }}
+                    <div class="alert alert-success mt-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ session('success') }}
+                        </div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 @endif
-                
+
                 @if (session('warning'))
-                <div class="alert alert-warning mt-2 d-flex justify-content-between align-items-center">
-                    <div>
-                        {{ session('warning') }}
+                    <div class="alert alert-warning mt-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ session('warning') }}
+                        </div>
+                        <button type="button" class="close " data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button type="button" class="close " data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 @endif
-                
+
                 @if (session('danger'))
-                <div class="alert alert-danger mt-2 d-flex justify-content-between align-items-center">
-                    <div>
-                        {{ session('danger') }}
+                    <div class="alert alert-danger mt-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ session('danger') }}
+                        </div>
+                        <button type="button" class="close " data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button type="button" class="close " data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 @endif
-                
+
                 @if (session('error'))
-                <div class="alert alert-danger mt-2 d-flex justify-content-between align-items-center">
-                    <div>
-                        {{ session('error') }}
+                    <div class="alert alert-danger mt-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ session('error') }}
+                        </div>
+                        <button type="button" class="close " data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button type="button" class="close " data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 @endif
-                
+
                 <table class="table mt-3" id="data_table">
                     <thead>
                         <tr>
@@ -77,30 +79,31 @@
                     </thead>
                     <tbody>
                         @foreach ($sKeluars as $s_keluar)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $s_keluar->kode_obat_keluar }}</td>
-                            <td>{{ $s_keluar->tanggal_keluar }}</td>
-                            <td>{{ $s_keluar->obat->nama_obat }}</td>
-                            <td>{{ $s_keluar->qty }}</td>
-                            <td>
-                                <a href="{{ route('admin.s_keluar.edit', $s_keluar) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form id="delete-form-{{ $s_keluar->id }}"
-                                    action="{{ route('admin.s_keluar.destroy', $s_keluar) }}" method="POST"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" onclick="confirmDelete({{ $s_keluar->id }})"
-                                        class="btn btn-danger btn-sm">Hapus</button>
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $s_keluar->kode_obat_keluar }}</td>
+                                <td>{{ $s_keluar->tanggal_keluar }}</td>
+                                <td>{{ $s_keluar->obat->nama_obat }}</td>
+                                <td>{{ $s_keluar->qty }}</td>
+                                <td>
+                                    <a href="{{ route('admin.s_keluar.edit', $s_keluar) }}"
+                                        class="btn btn-warning btn-sm">Edit</a>
+                                    <form id="delete-form-{{ $s_keluar->id }}"
+                                        action="{{ route('admin.s_keluar.destroy', $s_keluar) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $s_keluar->id }})"
+                                            class="btn btn-danger btn-sm">Hapus</button>
                                     </form>
                                 </td>
                             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    
-                    <!-- Laporan Modal -->
-                    <div class="modal fade" id="laporanModal" tabindex="-1" role="dialog" aria-labelledby="laporanModalLabel"
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <!-- Laporan Modal -->
+                <div class="modal fade" id="laporanModal" tabindex="-1" role="dialog" aria-labelledby="laporanModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -114,7 +117,8 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="start_date">Tanggal Mulai:</label>
-                                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                        <input type="date" class="form-control" id="start_date" name="start_date"
+                                            required>
                                     </div>
                                     <div class="form-group">
                                         <label for="end_date">Tanggal Akhir:</label>
@@ -129,7 +133,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Impor Modal -->
                 <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel">
                     <div class="modal-dialog" role="document">
@@ -146,12 +150,43 @@
                                     <div class="mb-3">
                                         <label for="file" class="form-label">Pilih File Excel</label>
                                         <input class="form-control" type="file" id="file" name="file"
-                                        accept=".xlsx,.xls">
+                                            accept=".xlsx,.xls">
                                     </div>
                                     <button type="submit" class="btn btn-primary">Import</button>
                                 </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Modal Export -->
+                <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form action="/admin/export-skeluar" method="GET">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exportModalLabel">Pilih Rentang Tanggal</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Tutup"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="start_date" class="form-label">Tanggal Awal</label>
+                                        <input type="date" name="start_date" id="start_date" class="form-control"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="end_date" class="form-label">Tanggal Akhir</label>
+                                        <input type="date" name="end_date" id="end_date" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Ekspor</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

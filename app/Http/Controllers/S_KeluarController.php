@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SKeluarExport;
 use App\Imports\SKeluarImport;
+use App\Models\Notifikasi;
 use App\Models\S_Keluar;
 use App\Models\Obat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class S_KeluarController extends Controller
 {
@@ -54,6 +57,21 @@ class S_KeluarController extends Controller
         $obat->stok -= $request->qty;
         $obat->save();
 
+        $cekNotif = Notifikasi::where('obat_id', $obat->id)->where(
+            'tanggal',
+            date('Y-m-d', strtotime(now()))
+        )->first();
+        // Update notif
+        if ($cekNotif == null && $obat->stok <= 20) {
+            $notifikasi = new Notifikasi();
+            $notifikasi->tanggal = now();
+            $notifikasi->slug = Str::slug($obat->nama_obat);
+            $notifikasi->obat_id = $obat->id;
+            $notifikasi->low_stok = $obat->stok;
+            $notifikasi->is_read = false;
+            $notifikasi->save();
+        }
+
         return redirect()->route('admin.s_keluar.index')->with('success', 'Stok keluar berhasil ditambahkan.');
     }
 
@@ -93,6 +111,20 @@ class S_KeluarController extends Controller
             $newObat->save();
         }
 
+        $cekNotif = Notifikasi::where('obat_id', $newObat->id)->where(
+            'tanggal',
+            date('Y-m-d', strtotime(now()))
+        )->first(); // Update notif
+        if (!$cekNotif && $newObat->stok <= 20) {
+            $notifikasi = new Notifikasi();
+            $notifikasi->tanggal = now();
+            $notifikasi->slug = Str::slug($newObat->nama_obat);
+            $notifikasi->obat_id = $newObat->id;
+            $notifikasi->low_stok = $newObat->stok;
+            $notifikasi->is_read = false;
+            $notifikasi->save();
+        }
+
         return redirect()->route('admin.s_keluar.index')->with('warning', 'Stok Keluar berhasil diperbarui.');
     }
 
@@ -107,6 +139,15 @@ class S_KeluarController extends Controller
         $s_keluar->delete();
         return redirect()->route('admin.s_keluar.index')->with('danger', 'Stok Keluar berhasil dihapus.');
     }
+
+    public function export(Request $request)
+    {
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        return Excel::download(new SKeluarExport($startDate, $endDate), 'stok_keluar.xlsx');
+    }
+
 
     public function import(Request $request)
     {

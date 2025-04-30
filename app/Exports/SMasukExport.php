@@ -14,9 +14,20 @@ class SMasukExport implements FromCollection, WithHeadings, WithMapping
      *
      * @return \Illuminate\Support\Collection
      */
+    protected $startDate;
+    protected $endDate;
+
+    public function __construct($startDate, $endDate)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
+
     public function collection()
     {
-        return S_Masuk::with('supplier', 'obat')->get(); // Mengambil data dengan relasi
+        return S_Masuk::with('supplier', 'obat')
+            ->whereBetween('tanggal_masuk', [$this->startDate, $this->endDate])
+            ->get(); // Mengambil data dengan relasi
     }
 
     /**

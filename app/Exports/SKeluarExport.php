@@ -14,9 +14,20 @@ class SKeluarExport implements FromCollection, WithHeadings, WithMapping
      *
      * @return \Illuminate\Support\Collection
      */
+
+    protected $startDate;
+    protected $endDate;
+
+    public function __construct($startDate, $endDate)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
+
     public function collection()
     {
-        return S_Keluar::with('obat')->get(); // Mengambil data dengan relasi
+        return S_Keluar::with('obat')->whereBetween('tanggal_keluar', [$this->startDate, $this->endDate])
+            ->get(); // Mengambil data dengan relasi
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SMasukExport;
 use App\Imports\SMasukImport;
 use App\Models\S_Masuk;
 use App\Models\Obat;
@@ -111,6 +112,14 @@ class S_MasukController extends Controller
 
         $s_masuk->delete();
         return redirect()->route('admin.s_masuk.index')->with('danger', 'Stok Masuk berhasil dihapus.');
+    }
+
+    public function export(Request $request)
+    {
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        return Excel::download(new SMasukExport($startDate, $endDate), 'stok_masuk.xlsx');
     }
 
     public function import(Request $request)
