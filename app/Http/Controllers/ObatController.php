@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ObatImport;
 use App\Models\Obat;
 use App\Models\Jenis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ObatController extends Controller
 {
@@ -79,5 +82,16 @@ class ObatController extends Controller
         }
         $obat->delete();
         return redirect()->route('admin.obat.index')->with('danger', 'Obat berhasil dihapus.');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new ObatImport, $request->file('file'));
+
+        return back()->with('success', 'Data obat berhasil diimpor!');
     }
 }
