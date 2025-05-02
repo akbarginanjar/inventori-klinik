@@ -50,4 +50,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $( '#obat_id' ).select2( {
+            theme: 'bootstrap-5'
+        } );
+    </script>
 @endsection

@@ -1,6 +1,7 @@
 @extends('app-layout.content')
 
 @section('content')
+
     <div class="container">
         
         <h2>Tambah Nama Obat</h2>
@@ -19,7 +20,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jenis_id">Jenis Obat</label>
-                        <select name="jenis_id" id="jenis_id" class="form-control" required>
+                        <select name="jenis_id" id="jenis_id" class="form-control select2" required>
                             @foreach($jenis as $jeni)
                             <option value="{{ $jeni->id }}">{{ $jeni->nama_jenis }}</option>
                             @endforeach
@@ -33,4 +34,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $( '#jenis_id' ).select2( {
+            theme: 'bootstrap-5'
+        } );
+    </script>
+    
+    
 @endsection

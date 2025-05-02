@@ -37,4 +37,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $( '#jenis_id' ).select2( {
+            theme: 'bootstrap-5'
+        } );
+    </script>
 @endsection
